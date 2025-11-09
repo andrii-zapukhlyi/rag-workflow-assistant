@@ -1,21 +1,29 @@
 import requests
 from requests.auth import HTTPBasicAuth
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
-import os
+from config.settings import CONFLUENCE_DOMAIN, CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN
 
-load_dotenv()
-domain = os.getenv("CONFLUENCE_DOMAIN")
-email = os.getenv("CONFLUENCE_USERNAME")
-api_token = os.getenv("CONFLUENCE_API_TOKEN")
-
-def get_pages_from_space(space_key):
-    url = f"https://{domain}/wiki/rest/api/space/{space_key}/content/page"
-    auth = HTTPBasicAuth(email, api_token)
+def get_public_pages():
+    url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/space/PUBLIC/content/page"
+    auth = HTTPBasicAuth(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN)
     response = requests.get(url, auth=auth)
     if response.status_code == 200:
         result = response.json().get("results", [])
         pages = [{"id": page["id"], "title": page["title"]} for page in result]
+        return pages
+    else:
+        print("Error fetching public pages:", response.status_code, response.text)
+        return []
+
+def get_pages_from_space(space_key):
+    url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/space/{space_key}/content/page"
+    auth = HTTPBasicAuth(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN)
+    response = requests.get(url, auth=auth)
+    if response.status_code == 200:
+        result = response.json().get("results", [])
+        pages = [{"id": page["id"], "title": page["title"]} for page in result]
+        public_pages = get_public_pages()
+        pages += public_pages
         return [page for page in pages if page['title'] != "Main Page"]
     else:
         print("Error fetching pages:", response.status_code, response.text)
@@ -79,7 +87,7 @@ def extract_text_and_images(soup, page_id):
                     ri = child.find('ri:attachment')
                     if ri and ri.get('ri:filename'):
                         filename = ri['ri:filename']
-                        url = f"https://{domain}/wiki/download/attachments/{page_id}/{filename}"
+                        url = f"https://{CONFLUENCE_DOMAIN}/wiki/download/attachments/{page_id}/{filename}"
 
                     cap = child.find('ac:caption')
                     if cap and cap.get_text(strip=True):
@@ -117,9 +125,9 @@ def extract_text_and_images(soup, page_id):
             user_tag = link.find('ri:user')
             if user_tag:
                 account_id = user_tag.get('ri:account-id')
-                url = f"https://{domain}/wiki/rest/api/user"
+                url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/user"
                 params = {"accountId": account_id}
-                response = requests.get(url, params=params, auth=(email, api_token))
+                response = requests.get(url, params=params, auth=(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN))
                 if response.status_code == 200:
                     user_name = response.json().get("displayName")
                 else:
@@ -157,14 +165,15 @@ def extract_text_and_images(soup, page_id):
     return {"text": "\n".join(texts), "images": images}
 
 def get_content_of_page(page_id):
-    url = f"https://{domain}/wiki/rest/api/content/{page_id}?expand=body.storage"
-    auth = HTTPBasicAuth(email, api_token)
+    url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/content/{page_id}?expand=body.storage"
+    auth = HTTPBasicAuth(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN)
     response = requests.get(url, auth=auth)
     if response.status_code == 200:
         data = response.json()
         content = data['body']['storage']['value']
         soup = BeautifulSoup(content, "html.parser")
-        return extract_text_and_images(soup, page_id)
+        formated_content = extract_text_and_images(soup, page_id)
+        return formated_content
     else:
         print("Error fetching content:", response.status_code, response.text)
         return None
