@@ -3,9 +3,14 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [ "main", "master" ]
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
   pull_request:
     branches: [ "main", "master" ]
-  workflow_dispatch:
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
 
 env:
   REGISTRY_NAME: ${{ secrets.REGISTRY_LOGIN_SERVER }}
