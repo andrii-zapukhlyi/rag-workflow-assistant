@@ -5,12 +5,36 @@ import { Sidebar } from "@/components/sidebar"
 import { ChatMessages } from "@/components/chat-messages"
 import { ChatInput } from "@/components/chat-input"
 import { ChatHeader } from "@/components/chat-header"
+import { Button } from "@/components/ui/button"
 import { useAuth } from "@/hooks/use-auth"
 import { chatApi } from "@/lib/api"
 import type { Message } from "@/lib/auth"
 
 import { useRef } from "react"
 import type { SidebarRef } from "@/components/sidebar"
+
+function SuggestionButtons({ onSelect }: { onSelect: (q: string) => void }) {
+  const questions = [
+    "How to configure VPN on Windows?",
+    "How to setup 2FA via Authenticator?",
+    "Company leave types in table"
+  ]
+  return (
+    <div className="w-full max-w-4xl mx-auto px-4 pb-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {questions.map((q, i) => (
+        <Button
+          key={i}
+          variant="outline"
+          size="sm"
+          onClick={() => onSelect(q)}
+          className="w-full h-auto py-2 whitespace-normal text-center rounded-xl bg-background hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-colors border-dashed"
+        >
+          {q}
+        </Button>
+      ))}
+    </div>
+  )
+}
 
 export function ChatContainer() {
   const [currentChatId, setCurrentChatId] = useState<string | null>(null)
@@ -138,6 +162,9 @@ export function ChatContainer() {
               isLoading={isLoading}
               isGenerating={isGenerating}
             />
+            {messages.length === 0 && !isLoading && !isGenerating && (
+              <SuggestionButtons onSelect={handleSendMessage} />
+            )}
             <ChatInput
               chatId={currentChatId}
               onMessageSent={handleSendMessage}
@@ -150,6 +177,9 @@ export function ChatContainer() {
                 How can I help you today?
               </h2>
             </div>
+            {messages.length === 0 && !isLoading && !isGenerating && (
+              <SuggestionButtons onSelect={handleSendMessage} />
+            )}
             <ChatInput
               chatId="new"
               onMessageSent={handleSendMessage}

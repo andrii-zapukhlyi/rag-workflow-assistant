@@ -1,12 +1,15 @@
 #!/bin/bash
-domains="www.workflowassistant.app"
+domains="www.workflowassistant.app workflowassistant.app"
 rsa_key_size=4096
 data_path="./data/certbot"
 email="your-email@example.com" # REPLACE with your email
 staging=0
 
+domain_list=($domains)
+dirname=${domain_list[0]}
+
 if [ -d "$data_path" ]; then
-  read -p "Existing data found for $domains. Continue and replace existing certificate? (y/N) " decision
+  read -p "Existing data found for $dirname. Continue and replace existing certificate? (y/N) " decision
   if [ "$decision" != "Y" ] && [ "$decision" != "y" ]; then
     exit
   fi
@@ -20,9 +23,9 @@ if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/
   echo
 fi
 
-echo "### Creating dummy certificate for $domains ..."
-path="/etc/letsencrypt/live/$domains"
-mkdir -p "$data_path/conf/live/$domains"
+echo "### Creating dummy certificate for $dirname ..."
+path="/etc/letsencrypt/live/$dirname"
+mkdir -p "$data_path/conf/live/$dirname"
 docker compose -f docker-compose.prod.yml run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:$rsa_key_size -days 1\
     -keyout '$path/privkey.pem' \
@@ -36,9 +39,9 @@ echo
 
 echo "### Deleting dummy certificate ..."
 docker compose -f docker-compose.prod.yml run --rm --entrypoint "\
-  rm -Rf /etc/letsencrypt/live/$domains && \
-  rm -Rf /etc/letsencrypt/archive/$domains && \
-  rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
+  rm -Rf /etc/letsencrypt/live/$dirname && \
+  rm -Rf /etc/letsencrypt/archive/$dirname && \
+  rm -Rf /etc/letsencrypt/renewal/$dirname.conf" certbot
 echo
 
 echo "### Requesting Let's Encrypt certificate ..."

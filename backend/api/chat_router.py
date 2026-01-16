@@ -35,7 +35,7 @@ def generate_session_name(first_message: str) -> str:
             (
                 "system",
                 "Generate a short title (max 5 words) summarizing the user's message. "
-                "Do NOT add new information. Keep it concise, neutral, and lowercase.",
+                "Do NOT add new information or symbols like quotes. Keep it concise, neutral, and lowercase.",
             ),
             ("user", first_message),
         ]
@@ -45,7 +45,7 @@ def generate_session_name(first_message: str) -> str:
     title = response.content.strip()
 
     if not title:
-        title = first_message[:8] + "..."
+        title = first_message[:25] + "..."
 
     return title.capitalize()
 
