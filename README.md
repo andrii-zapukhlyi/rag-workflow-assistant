@@ -7,31 +7,34 @@ A comprehensive Multi-Agent Workflow Assistant designed to streamline enterprise
 ## Live Demo
 **[www.workflowassistant.app](https://www.workflowassistant.app)**
 
-## Demo Video
-[![Watch the video](video-thumbnail.jpg)](https://youtu.be/video-link)
-
 ## Tech Stack
 - **Backend:** Python, LangChain, FastAPI, Huggingface (Embeddings), SQLAlchemy (ORM)
 - **Database:** PostgreSQL
 - **Vector DB:** Qdrant
 - **Frontend:** Next.js, React, TypeScript
 - **Deployment:** Docker Compose, Azure Container Registry, Azure Virtual Machine, Nginx
+- **CI/CD:** GitHub Actions
 - **Authentication:** JWT, Refresh Tokens
-- **Integrations:** Confluence API (Automated documentation fetching), Supabase API (Cloud Storage), Groq API (LLMs)
+- **Integrations:** Confluence API, Supabase API, Groq API
 - **Package Manager:** Poetry
 
 ## The Challenge
-In modern enterprises, **Knowledge is Fragmented**. Vital information is locked in static documentation (like Confluence), task trackers (Jira), or inside the heads of specific employees. Finding the right answer, or the right person to ask, often takes longer than the task itself.
-*   **Dispersed Data:** Data exists in separate, non-integrated systems.
-*   **Productivity Loss:** Employees spend up to 20% of their time just *searching* for info.
-*   **Slow Onboarding:** New hires struggle to navigate complex internal systems without guidance.
+Modern enterprises struggle with **fragmented knowledge and workflows**. Critical information and tasks are scattered across multiple systems: Confluence, Jira, Slack, email, and often locked inside individual employees' heads. This leads to:
+
+* **Information Silos:** Data and knowledge are separated, making it hard to find answers quickly.
+* **Wasted Time:** Employees spend significant time searching, waiting for approvals, or figuring out processes.
+* **Complex Workflows:** Onboarding or completing multi-step tasks often requires juggling multiple tools and human interactions.
 
 ## The Solution
-The **Multi-Agent Workflow Assistant** serves as a "Central Nervous System" for enterprise data. It moves beyond simple Q&A by orchestrating specialized agents to solve complex problems:
+The **Multi-Agent Workflow Assistant** acts as a "central hub" for enterprise knowledge and workflows. By orchestrating multiple specialized agents, it streamlines both information retrieval and task execution:
 
-1.  **Stop Searching, Start Asking:** Uses **RAG (Retrieval-Augmented Generation)** to fetch, synthesize, and cite real-time data from Confluence. No more digging through wikis.
-2.  **Connect with Experts (Planned):** Instead of just reading a doc, the system will identify and connect you with the specific colleague who *wrote* it or knows the topic best.
-3.  **Actionable Workflows (Planned):** Future agents will trigger real-world actions, such as creating Jira tickets or initiating HR processes, directly from the chat.
+1. **Intelligent Q&A:** Uses **RAG (Retrieval-Augmented Generation)** to fetch, synthesize, and cite information from company documentation.
+2. **Workflow Automation (Planned):** Agents can create Jira tickets, track tasks, and automate routine processes directly from chat.
+3. **Expert Discovery (Planned):** Identify and connect with the right colleagues who have the knowledge or authority to help.
+4. **Future Expansion (Planned):** Additional agents can coordinate multi-step workflows, trigger notifications, or integrate with other enterprise systems.
+
+This approach reduces time spent searching, accelerates task completion, and unifies previously fragmented knowledge and workflows into a single conversational interface.
+
 
 ## Local Setup
 Follow these steps to download and run the project locally.
@@ -67,6 +70,6 @@ Follow these steps to download and run the project locally.
    `http://localhost`
 
 ## Future Plans
-- **CI/CD Pipeline:** Implementation of a CI/CD pipeline with GitHub Actions to automate the deployment process.
 - **Expert Finder Agent:** Implementation of an agent to help employees find experts within the company for specific tools or technologies.
 - **Process Starter Agent:** Integration with Jira API to facilitate task management and process initiation through the chatbot.
+- **Future Expansion:** Additional agents can coordinate multi-step workflows, trigger notifications, or integrate with other enterprise systems.
