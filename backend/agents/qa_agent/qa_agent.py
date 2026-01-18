@@ -1,7 +1,7 @@
 from langchain_core.messages import AIMessage, HumanMessage
 
 from db.crud import get_session_by_id, load_chat_history, save_messages
-from rag_qa.llm_client import run_qa_chain
+from agents.qa_agent.llm_client import run_qa_chain
 
 
 def handle_user_query(

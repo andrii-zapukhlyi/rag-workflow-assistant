@@ -3,8 +3,8 @@ from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
 from langchain_qdrant import QdrantVectorStore
 
 from config.settings import HF_API_TOKEN
-from rag_qa.chunker import chunk_and_prepare_metadata
-from rag_qa.confluence_client import get_all_pages
+from agents.qa_agent.chunker import chunk_and_prepare_metadata
+from agents.qa_agent.confluence_client import get_all_pages
 
 
 def build_vector_db(url: str, collection: str) -> None:

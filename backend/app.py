@@ -7,7 +7,7 @@ from qdrant_client import QdrantClient
 from tenacity import retry, stop_after_attempt, wait_exponential
 
 from api import auth_router, chat_router
-from rag_qa.vector_db_builder import build_vector_db
+from agents.qa_agent.vector_db_builder import build_vector_db
 
 qdrant_url = os.environ.get("QDRANT_URL", "http://localhost:6333")
 collection_name = "confluence_docs"

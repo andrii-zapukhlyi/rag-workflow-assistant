@@ -10,7 +10,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_groq import ChatGroq
 
 from config.settings import GROQ_API_KEY
-from rag_qa.retriever import get_retriever
+from agents.qa_agent.retriever import get_retriever
 
 
 def build_qa_chain(llm: ChatGroq, retriever: Any) -> Any:

@@ -4,7 +4,7 @@ from langchain_groq import ChatGroq
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from agents.qa_agent import handle_user_query
+from agents.qa_agent.qa_agent import handle_user_query
 from auth.auth import get_current_user
 from config.settings import GROQ_API_KEY
 from db.crud import (

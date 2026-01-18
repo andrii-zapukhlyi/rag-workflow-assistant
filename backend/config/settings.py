@@ -8,9 +8,9 @@ if "APP_ENV" not in os.environ:
 APP_ENV = os.environ.get("APP_ENV", "development")
 IS_DEVELOPMENT = APP_ENV.lower() == "development"
 
-CONFLUENCE_DOMAIN = os.environ.get("CONFLUENCE_DOMAIN")
-CONFLUENCE_USERNAME = os.environ.get("CONFLUENCE_USERNAME")
-CONFLUENCE_API_TOKEN = os.environ.get("CONFLUENCE_API_TOKEN")
+ATLASSIAN_DOMAIN = os.environ.get("ATLASSIAN_DOMAIN")
+ATLASSIAN_USERNAME = os.environ.get("ATLASSIAN_USERNAME")
+ATLASSIAN_API_TOKEN = os.environ.get("ATLASSIAN_API_TOKEN")
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 

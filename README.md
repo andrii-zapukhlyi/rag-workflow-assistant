@@ -15,6 +15,7 @@ A comprehensive Multi-Agent Workflow Assistant designed to streamline enterprise
 - **Deployment:** Docker Compose, Azure Container Registry, Azure Virtual Machine, Nginx
 - **CI/CD:** GitHub Actions
 - **Authentication:** JWT, Refresh Tokens
+- **Testing:** Pytest
 - **Integrations:** Confluence API, Supabase API, Groq API
 - **Package Manager:** Poetry
 

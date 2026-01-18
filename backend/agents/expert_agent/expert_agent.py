@@ -2,9 +2,7 @@ from langchain_groq import ChatGroq
 from sqlalchemy.orm import Session
 
 from config.settings import GROQ_API_KEY
-from expert_finder.skill_extractor import skill_extractor_tool
-from expert_finder.skill_lookup import skill_lookup_tool
-
+from agents.expert_agent.skill_utils import skill_extractor_tool, skill_lookup_tool
 
 def ask_expert_agent(db: Session, query: str, user_department: str) -> str:
     extracted_skills = skill_extractor_tool(query)

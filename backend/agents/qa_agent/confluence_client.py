@@ -4,13 +4,13 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from requests.auth import HTTPBasicAuth
 
-from config.settings import CONFLUENCE_API_TOKEN, CONFLUENCE_DOMAIN, CONFLUENCE_USERNAME
+from config.settings import ATLASSIAN_API_TOKEN, ATLASSIAN_DOMAIN, ATLASSIAN_USERNAME
 
 
 ## Fetch public titles of pages (for all employees)
 def get_public_titles() -> list:
-    url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/space/PUBLIC/content/page"
-    auth = HTTPBasicAuth(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN)
+    url = f"https://{ATLASSIAN_DOMAIN}/wiki/rest/api/space/PUBLIC/content/page"
+    auth = HTTPBasicAuth(ATLASSIAN_USERNAME, ATLASSIAN_API_TOKEN)
     response = requests.get(url, auth=auth)
     if response.status_code == 200:
         result = response.json().get("results", [])
@@ -23,8 +23,8 @@ def get_public_titles() -> list:
 
 ## Fetch only titles for a specific department/space
 def get_available_titles(space_key: str) -> list:
-    url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/space/{space_key}/content/page"
-    auth = HTTPBasicAuth(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN)
+    url = f"https://{ATLASSIAN_DOMAIN}/wiki/rest/api/space/{space_key}/content/page"
+    auth = HTTPBasicAuth(ATLASSIAN_USERNAME, ATLASSIAN_API_TOKEN)
     response = requests.get(url, auth=auth)
     if response.status_code == 200:
         result = response.json().get("results", [])
@@ -37,8 +37,8 @@ def get_available_titles(space_key: str) -> list:
 
 ## Fetch and process page
 def get_content_of_page(page_id: str) -> dict[str, str | list[Any]] | None:
-    url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/content/{page_id}?expand=body.storage"
-    auth = HTTPBasicAuth(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN)
+    url = f"https://{ATLASSIAN_DOMAIN}/wiki/rest/api/content/{page_id}?expand=body.storage"
+    auth = HTTPBasicAuth(ATLASSIAN_USERNAME, ATLASSIAN_API_TOKEN)
     response = requests.get(url, auth=auth)
     if response.status_code == 200:
         data = response.json()
@@ -53,8 +53,8 @@ def get_content_of_page(page_id: str) -> dict[str, str | list[Any]] | None:
 
 ## Fetch all space keys in the Confluence domain
 def get_all_spaces() -> list:
-    url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/space"
-    auth = HTTPBasicAuth(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN)
+    url = f"https://{ATLASSIAN_DOMAIN}/wiki/rest/api/space"
+    auth = HTTPBasicAuth(ATLASSIAN_USERNAME, ATLASSIAN_API_TOKEN)
     response = requests.get(url, auth=auth)
     if response.status_code == 200:
         result = response.json().get("results", [])
@@ -73,7 +73,7 @@ def get_all_pages() -> list:
         available_titles = get_available_titles(space["key"])
         page_titles = [page["title"] for page in available_titles]
         page_link = [
-            f"https://{CONFLUENCE_DOMAIN}/wiki/spaces/{space['key']}/pages/{page['id']}"
+            f"https://{ATLASSIAN_DOMAIN}/wiki/spaces/{space['key']}/pages/{page['id']}"
             for page in available_titles
         ]
         page_text = [
@@ -158,7 +158,7 @@ def extract_text_and_images(
                     ri = child.find("ri:attachment")
                     if ri and ri.get("ri:filename"):
                         filename = ri["ri:filename"]
-                        url = f"https://{CONFLUENCE_DOMAIN}/wiki/download/attachments/{page_id}/{filename}"
+                        url = f"https://{ATLASSIAN_DOMAIN}/wiki/download/attachments/{page_id}/{filename}"
 
                     cap = child.find("ac:caption")
                     if cap and cap.get_text(strip=True):
@@ -200,10 +200,10 @@ def extract_text_and_images(
             user_tag = link.find("ri:user")
             if user_tag:
                 account_id = user_tag.get("ri:account-id")
-                url = f"https://{CONFLUENCE_DOMAIN}/wiki/rest/api/user"
+                url = f"https://{ATLASSIAN_DOMAIN}/wiki/rest/api/user"
                 params = {"accountId": account_id}
                 response = requests.get(
-                    url, params=params, auth=(CONFLUENCE_USERNAME, CONFLUENCE_API_TOKEN)
+                    url, params=params, auth=(ATLASSIAN_USERNAME, ATLASSIAN_API_TOKEN)
                 )
                 if response.status_code == 200:
                     user_name = response.json().get("displayName")

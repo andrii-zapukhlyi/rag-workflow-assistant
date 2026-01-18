@@ -4,7 +4,7 @@ from langchain_core.vectorstores import VectorStoreRetriever
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_qdrant import QdrantVectorStore
 
-from rag_qa.confluence_client import get_available_titles, get_public_titles
+from agents.qa_agent.confluence_client import get_available_titles, get_public_titles
 
 
 def get_retriever(space_key: str, k: int = 2) -> VectorStoreRetriever:
